@@ -1,7 +1,7 @@
 # Defcon-23-presentation
 USB Attack to Decrypt Wi-Fi Communications
 
-I gave a presentation last week on two variants of rubber ducky payloads that decrypt wireless ssl traffic. 
+I gave a presentation 8/7/15 on two variants of rubber ducky payloads that decrypt wireless ssl traffic. 
 The first variant uses the ducky firmware (keyboard only)
 The second variant uses the twin duck firmware (keyboard and mass storage)
 
