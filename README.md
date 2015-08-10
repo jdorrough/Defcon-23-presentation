@@ -13,7 +13,7 @@ That should be all you need to make the keyboard only payload work.
 *Note you may need to adjust timers or acknowledge pops differently than what my test machine needed. This version will work on IE and Chrome but not Firefox.
 
 ****Payload 2 using Keyboard and USB Mass Storage “Twin-trust-root.txt”*****
-Like the pervious payload, you will need to setup a MITM listener and export a certificate. 
+Like the previous payload, you will need to setup a MITM listener and export a certificate. 
 For this payload you will need to add the certificate to your own copy of Firefox. Then you will need to copy your Firefox key3 and cert8 files. I’ve included slides in the presentation to show you where they files are located. I’ve also included a slide in the presentation shows what the file hierarchy looks like in the ca directory of the DUCKY drive. 
 *Note you may need to adjust timers or acknowledge pop ups differently than what my test machine needed. This version will work on IE, Chrome and Firefox.
 
